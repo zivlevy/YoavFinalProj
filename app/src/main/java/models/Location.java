@@ -6,22 +6,26 @@ public class Location {
 
     public String name;
     public String description;
-    public int id;
+    public String id;
     public double averageRating;
-    public double lat; //latitude
-    public double lng; //longitude
+    public double latitude;
+
+    public double longitude;
     public ImageView photo;
     public int numOfReviews;
 
-    public Location(String name, String description, int id, double averageRating, double lat, double lng, ImageView photo) {
+    public String userId;
+
+    public Location(String name, String description, double averageRating, double lat, double lng, ImageView photo, String userId) {
         this.name = "";
         this.description = "";
-        this.id = id;
         this.averageRating = 0;
-        this.lat = lat;
-        this.lng = lng;
+        this.latitude = lat;
+        this.longitude = lng;
         this.photo = photo;
         this.numOfReviews = 0;
+        this.userId = userId;
+
     }
 
     public String getName() {
@@ -40,11 +44,11 @@ public class Location {
         this.description = description;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -57,19 +61,19 @@ public class Location {
     }
 
     public double getLat() {
-        return lat;
+        return latitude;
     }
 
     public void setLat(double lat) {
-        this.lat = lat;
+        this.latitude = lat;
     }
 
     public double getLng() {
-        return lng;
+        return longitude;
     }
 
     public void setLng(double lng) {
-        this.lng = lng;
+        this.longitude = lng;
     }
 
     public ImageView getPhoto() {

@@ -15,18 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Auth auth = Auth.getInstance();
-        auth.signIn("zivilevy@gmail.com", "zivi1503")   // this is a Task<AuthResult>
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "success", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(this, "failure", Toast.LENGTH_LONG).show();
-                    }
-                });
 
-
-        Intent intent= new Intent(MainActivity.this, LogIn.class);
+        Intent intent= new Intent(MainActivity.this, Test.class);
         startActivity(intent);
       }
 

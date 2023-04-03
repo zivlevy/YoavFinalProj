@@ -9,7 +9,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Auth {
     private FirebaseAuth mAuth;
@@ -59,13 +60,11 @@ public class Auth {
                 });
     }
     public Task<AuthResult> signUp(String email, String password, String userName , String phoneNumber ) {
-
-        // sign up with email and password
-        Map<String, Object> user = new HashMap<>();
-        return mAuth.createUserWithEmailAndPassword(email, password)
+         return mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         currentUser = mAuth.getCurrentUser();
+                        Map<String, Object> user = new HashMap<>();
                         // add to firestore
                         user.put("email", email);
                         user.put("name", userName);
@@ -91,6 +90,8 @@ public class Auth {
                     }
                 });
     }
+
+
 
     private Context getApplicationContext() {
         return null;
