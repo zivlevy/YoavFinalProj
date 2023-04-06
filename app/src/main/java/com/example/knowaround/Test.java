@@ -22,10 +22,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -47,6 +51,7 @@ import services.Locations;
 public class Test extends AppCompatActivity {
     private static final String TAG = "MyActivity";
     Button btnTest;
+    FloatingActionButton btnFab;
     EditText etLocationName, etLocationDescription, etLatitude, etLongitude;
     String locationName, locationDescription;
     double latitude, longitude;
@@ -69,7 +74,8 @@ public class Test extends AppCompatActivity {
         File f = new File(currentPhotoPath);
         saveToDB(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
-        imageView.setImageURI(contentUri);
+
+//        imageView.setImageURI(contentUri);
     }
 
 
@@ -79,11 +85,30 @@ public class Test extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        // Add customization options here
+
         Locations locations = Locations.getInstance();
 
         btnTest = findViewById(R.id.btAddLocation);
         imageView = findViewById(R.id.imageView);
+        btnFab = findViewById(R.id.floating_action_button);
+        btnFab.setOnClickListener(view -> {
 
+
+//            MaterialAlertDialogBuilder buildr =  new MaterialAlertDialogBuilder(this);
+//            buildr.setTitle("Title");
+//            buildr.setMessage("Message");
+//            buildr.setPositiveButton("OK", (dialogInterface, i) -> {
+//                Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+//            });
+//            buildr.setNegativeButton("Cancel", (dialogInterface, i) -> {    Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+//            });
+//            buildr.show();
+        });
+        Glide.with(this).load("https://res.cloudinary.com/du3ksi0bw/image/upload/v1680558377/imports/rzcjowxzowmmshqjh0kf.jpg")
+                .override(500, 800)
+                .fitCenter()
+                .into(imageView);
 //        if (ContextCompat.checkSelfPermission(Test.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
 //            ActivityCompat.requestPermissions(Test.this, new String[]{
 //                    Manifest.permission.CAMERA
@@ -192,25 +217,32 @@ public class Test extends AppCompatActivity {
         return image;
     }
 
-   private void saveToDB(String filePath) {
-       FirebaseStorage storage = FirebaseStorage.getInstance();
-       StorageReference storageRef = storage.getReference();
-       Uri file = Uri.fromFile(new File(filePath));
-       StorageReference imageRef = storageRef.child("images/"+ new Date() + ".jpg");
-       UploadTask uploadTask = imageRef.putFile(file);
+    private void saveToDB(String filePath) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        Uri file = Uri.fromFile(new File(filePath));
+        StorageReference imageRef = storageRef.child("images/"+ new Date() + ".jpg");
+        UploadTask uploadTask = imageRef.putFile(file);
 
 // Register observers to listen for when the download is done or if it fails
-       uploadTask.addOnFailureListener(new OnFailureListener() {
-           @Override
-           public void onFailure(@NonNull Exception exception) {
-               // Handle unsuccessful uploads
-           }
-       }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-           @Override
-           public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-               // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-               // ...
-           }
-       });
-   }
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String url = uri.toString();
+                        Log.d("url", url);
+                    }
+                });
+            }
+        });
+    }
 }
