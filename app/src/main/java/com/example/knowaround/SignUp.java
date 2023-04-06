@@ -23,10 +23,10 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         Auth auth = Auth.getInstance();
-        btnSignUp=findViewById(R.id.btnSignupignUp);
-        etEmail=findViewById(R.id.SignUpEmail);
-        etPassword=findViewById(R.id.SignUpPassword);
-        etUserName=findViewById(R.id.SignUpUsername);
+        btnSignUp=findViewById(R.id.button_login);
+        etEmail=findViewById(R.id.inputEditText_email);
+        etPassword=findViewById(R.id.inputEditText_password);
+        etUserName=findViewById(R.id.inputEditText_username);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

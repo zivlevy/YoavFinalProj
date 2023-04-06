@@ -4,85 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn"
+    android:orientation="vertical"
     android:padding="30dp"
-    android:orientation="vertical">
+    tools:context=".LogIn">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="KnowAround"
-
-        android:textSize="50sp"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        />
+        android:layout_marginTop="10dp"
+        android:text="KnowAround"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Email Address:"
-
-        android:textSize="20sp"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="5dp"
-        />
-
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayout_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/LoginEmail"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Password:"
-
-        android:textSize="20sp"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="5dp"
-        />
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayout_username"
+        app:startIconDrawable="@drawable/ic_email">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEditText_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="email"
+            android:inputType="textEmailAddress"
+            android:nextFocusForward="@id/inputLayout_password"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayout_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/LoginPassword"
-        android:inputType="textPassword"
-        />
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayout_email"
+        app:startIconDrawable="@drawable/ic_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEditText_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <LinearLayout
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
         android:weightSum="2">
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Log In!"
-        android:textSize="16sp"
-        android:id="@+id/btnLoginogIn"
-        />
+        <Button
+            android:id="@+id/btnLoginogIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:text="Login"
+            android:textSize="16sp" />
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Sign Up!"
-        android:textSize="16sp"
-        android:id="@+id/btMoveToSignUp"
-        />
-
+        <Button
+            android:id="@+id/btMoveToSignUp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:text="Goto Sign Up"
+            android:textSize="16sp" />
 
 
     </LinearLayout>
-
-
-
 
 
 </LinearLayout>
