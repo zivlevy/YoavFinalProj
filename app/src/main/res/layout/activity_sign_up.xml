@@ -87,7 +87,7 @@
             android:layout_gravity="center_horizontal"
             android:text="Sign Up!"
             android:textSize="30sp"
-            android:id="@+id/btSignUp"
+            android:id="@+id/btnSignupignUp"
             />
 
 

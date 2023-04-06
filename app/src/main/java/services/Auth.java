@@ -49,7 +49,7 @@ public class Auth {
     }
 
 
-    public Task<AuthResult> signIn(String email, String password) {
+    public Task<AuthResult> login(String email, String password) {
        return  mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

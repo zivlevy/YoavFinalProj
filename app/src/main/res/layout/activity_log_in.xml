@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email Address:"
+        android:text="Enter Email Address:"
 
         android:textSize="20sp"
         android:layout_marginTop="50dp"
@@ -32,14 +32,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/LogInUsername"
+        android:id="@+id/LoginEmail"
         />
-
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password:"
+        android:text="Enter Password:"
 
         android:textSize="20sp"
         android:layout_marginTop="30dp"
@@ -49,7 +48,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/LogInPassword"
+        android:id="@+id/LoginPassword"
         android:inputType="textPassword"
         />
 
@@ -66,7 +65,7 @@
         android:layout_weight="1"
         android:text="Log In!"
         android:textSize="16sp"
-        android:id="@+id/btLogIn"
+        android:id="@+id/btnLoginogIn"
         />
 
     <Button
