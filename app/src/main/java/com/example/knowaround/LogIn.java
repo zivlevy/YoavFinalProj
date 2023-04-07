@@ -40,6 +40,9 @@ public class LogIn extends AppCompatActivity {
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
 
+                email = "zivilevy@gmail.com";
+                password = "zivi1503";
+
                 if (email.isEmpty() || password.isEmpty()) {
                     MaterialAlertDialogBuilder buildr = new MaterialAlertDialogBuilder(LogIn.this);
                     buildr.setTitle("Misssing Fields");
