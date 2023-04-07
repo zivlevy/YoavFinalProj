@@ -8,13 +8,14 @@
     android:padding="30dp"
     tools:context=".LogIn">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView_loginTitle"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="KnowAround"
-        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:text="Login to KnowAround!"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -24,9 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayout_username"
         app:startIconDrawable="@drawable/ic_email">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -45,9 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayout_email"
         app:startIconDrawable="@drawable/ic_lock">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -55,40 +50,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <LinearLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLoginogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_marginTop="20dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Logon"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayout_password" />
 
-        <Button
-            android:id="@+id/btnLoginogIn"
-            android:layout_width="0dp"
+
+    <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView_gotosignup"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="1"
-            android:text="Login"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btMoveToSignUp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="1"
-            android:text="Goto Sign Up"
-            android:textSize="16sp" />
-
-
-    </LinearLayout>
-
+            android:layout_marginTop="10dp"
+            android:text="Go to Signup"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"/>
 
 </LinearLayout>

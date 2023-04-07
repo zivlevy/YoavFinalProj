@@ -59,7 +59,7 @@ public class Auth {
                     }
                 });
     }
-    public Task<AuthResult> signUp(String email, String password, String userName , String phoneNumber ) {
+    public Task<AuthResult> signUp(String email, String password, String userName ) {
          return mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -68,17 +68,16 @@ public class Auth {
                         // add to firestore
                         user.put("email", email);
                         user.put("name", userName);
-                        user.put("phone", phoneNumber);
                         db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(getApplicationContext(), "User added successfully", Toast.LENGTH_SHORT).show();
+                                currentUser = mAuth.getCurrentUser();
                             }
                         })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getApplicationContext(), "Error adding user", Toast.LENGTH_SHORT).show();
+                                        currentUser = null;
                                     }
                                 });
                         // save current user

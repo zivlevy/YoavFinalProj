@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
 
 import services.Auth;
 
@@ -21,6 +22,7 @@ public class LogIn extends AppCompatActivity {
     TextInputEditText etEmail, etPassword;
     Auth auth = Auth.getInstance();
     String email, password;
+    MaterialTextView gotoSignupText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class LogIn extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
 
         btnLogin = findViewById(R.id.btnLoginogIn);
-        btnSignup = findViewById(R.id.btMoveToSignUp);
+        gotoSignupText=findViewById(R.id.textView_gotosignup);
         etEmail = findViewById(R.id.inputEditText_email);
         etPassword = findViewById(R.id.inputEditText_password);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +74,6 @@ public class LogIn extends AppCompatActivity {
                                 buildr.setTitle("Error Loging In");
                                 buildr.setMessage(task.getException().getMessage());
                                 buildr.setPositiveButton("OK", (dialogInterface, i) -> {
-
                                 });
 
                                 buildr.show();
@@ -85,10 +86,10 @@ public class LogIn extends AppCompatActivity {
             }
         });
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        gotoSignupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LogIn.this, SignUp.class);
+                Intent intent=new Intent(LogIn.this,SignUp.class);
                 startActivity(intent);
             }
         });
