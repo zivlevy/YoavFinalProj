@@ -4,29 +4,30 @@ import android.widget.ImageView;
 
 public class Location {
 
+    public String id;
     public String name;
     public String description;
-    public String id;
-    public double averageRating;
     public double latitude;
-
     public double longitude;
-    public ImageView photo;
+    public String photoURL;
+    public double averageRating;
     public int numOfReviews;
 
     public String userId;
 
-    public Location(String name, String description, double averageRating, double lat, double lng, ImageView photo, String userId) {
+    public Location(String name, String description, double averageRating, double lat, double lng, String photoURL, String userId) {
         this.name = "";
         this.description = "";
-        this.averageRating = 0;
         this.latitude = lat;
         this.longitude = lng;
-        this.photo = photo;
+        this.photoURL = photoURL;
+        this.averageRating = 0;
         this.numOfReviews = 0;
         this.userId = userId;
 
     }
+
+
 
     public String getName() {
         return name;
@@ -76,12 +77,12 @@ public class Location {
         this.longitude = lng;
     }
 
-    public ImageView getPhoto() {
-        return photo;
+    public String getPhotoURL() {
+        return photoURL;
     }
 
-    public void setPhoto(ImageView photo) {
-        this.photo = photo;
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public int getNumOfReviews() {

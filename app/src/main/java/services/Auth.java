@@ -72,6 +72,7 @@ public class Auth {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 currentUser = mAuth.getCurrentUser();
+//                                return null;
                             }
                         })
                                 .addOnFailureListener(new OnFailureListener() {

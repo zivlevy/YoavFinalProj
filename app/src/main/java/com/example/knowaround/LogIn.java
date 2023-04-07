@@ -44,26 +44,26 @@ public class LogIn extends AppCompatActivity {
                 password = "zivi1503";
 
                 if (email.isEmpty() || password.isEmpty()) {
-                    MaterialAlertDialogBuilder buildr = new MaterialAlertDialogBuilder(LogIn.this);
-                    buildr.setTitle("Misssing Fields");
-                    buildr.setMessage("Please fill all the fields");
-                    buildr.setPositiveButton("OK", (dialogInterface, i) -> {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LogIn.this);
+                    builder.setTitle("Misssing Fields");
+                    builder.setMessage("Please fill all the fields");
+                    builder.setPositiveButton("OK", (dialogInterface, i) -> {
 
                     });
 
-                    buildr.show();
+                    builder.show();
                     return;
                 }
 
                 if (password.length() < 6) {
-                    MaterialAlertDialogBuilder buildr = new MaterialAlertDialogBuilder(LogIn.this);
-                    buildr.setTitle("Password too short");
-                    buildr.setMessage("Please enter a password with at least 6 characters");
-                    buildr.setPositiveButton("OK", (dialogInterface, i) -> {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LogIn.this);
+                    builder.setTitle("Password too short");
+                    builder.setMessage("Please enter a password with at least 6 characters");
+                    builder.setPositiveButton("OK", (dialogInterface, i) -> {
 
                     });
 
-                    buildr.show();
+                    builder.show();
                     return;
                 }
                 auth.login(email, password)
@@ -73,13 +73,13 @@ public class LogIn extends AppCompatActivity {
                                 startActivity(intent);
                                 Toast.makeText(LogIn.this, "Hurray!", Toast.LENGTH_SHORT).show();
                             } else {
-                                MaterialAlertDialogBuilder buildr = new MaterialAlertDialogBuilder(LogIn.this);
-                                buildr.setTitle("Error Loging In");
-                                buildr.setMessage(task.getException().getMessage());
-                                buildr.setPositiveButton("OK", (dialogInterface, i) -> {
+                                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LogIn.this);
+                                builder.setTitle("Error Loging In");
+                                builder.setMessage(task.getException().getMessage());
+                                builder.setPositiveButton("OK", (dialogInterface, i) -> {
                                 });
 
-                                buildr.show();
+                                builder.show();
                             }
                         })
                         .addOnFailureListener(err -> {

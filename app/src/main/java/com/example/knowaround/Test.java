@@ -240,8 +240,10 @@ public class Test extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         String url = uri.toString();
                         Log.d("url", url);
+//                        return null;
                     }
                 });
+//                return null;
             }
         });
     }
