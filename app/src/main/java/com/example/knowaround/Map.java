@@ -40,23 +40,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         });
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // init map
         LatLng israel = new LatLng(31.8157, 35.046);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(israel));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(8));
+
+        // show user location
     }
 
 
