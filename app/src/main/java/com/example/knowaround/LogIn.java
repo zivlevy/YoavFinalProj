@@ -71,7 +71,7 @@ public class LogIn extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(LogIn.this, Map.class);
                                 startActivity(intent);
-                                Toast.makeText(LogIn.this, "Hurray!", Toast.LENGTH_SHORT).show();
+                                finish();
                             } else {
                                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LogIn.this);
                                 builder.setTitle("Error Loging In");
@@ -94,6 +94,7 @@ public class LogIn extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(LogIn.this,SignUp.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

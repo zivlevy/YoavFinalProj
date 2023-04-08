@@ -167,8 +167,7 @@ public class AddLocation extends AppCompatActivity {
                                 builder.setTitle("Success");
                                 builder.setMessage("The location saved successfully .");
                                 builder.setPositiveButton("OK", (dialogInterface, i) -> {
-                                    Intent intent = new Intent(AddLocation.this, Map.class);
-                                    startActivity(intent);
+                                    finish();
                                 });
 
                                 builder.show();

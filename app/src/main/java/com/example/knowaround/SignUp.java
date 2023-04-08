@@ -66,6 +66,7 @@ public class SignUp extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Intent intent=new Intent(SignUp.this,Map.class);
                                 startActivity(intent);
+                                finish();
                             } else {
                                 MaterialAlertDialogBuilder buildr = new MaterialAlertDialogBuilder(SignUp.this);
                                 buildr.setTitle("Error Signing Up");
@@ -86,6 +87,7 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(SignUp.this,LogIn.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
