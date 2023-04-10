@@ -1,0 +1,9 @@
+0. make list of locations types (food, medical, etc) - Yoav (10/4)
+1. add all locations as markers to the map - Ziv (10/4)
+2. make different markers for different types of locations - create the icons ( Ziv) - Ziv (10/4)
+3. add the markers to the map - Yoav -  (12/4)
+4. click on marker open bottom drawer with location details - Yoav + Ziv
+5. add review to location - Yoav + Ziv
+6. edit location by its creator only - Yoav + Ziv
+7. delete location by its creator only - Yoav + Ziv
+8. add navigate to location (waze and google maps) - Yoav + Ziv

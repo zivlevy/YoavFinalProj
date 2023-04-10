@@ -68,19 +68,21 @@ public class Auth {
                         // add to firestore
                         user.put("email", email);
                         user.put("name", userName);
-                        db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                currentUser = mAuth.getCurrentUser();
-//                                return null;
-                            }
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        currentUser = null;
-                                    }
-                                });
+                        user.put("id", currentUser.getUid());
+                        db.document("users/" + currentUser.getUid()).set(user);
+//                        db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                            @Override
+//                            public void onSuccess(DocumentReference documentReference) {
+//                                currentUser = mAuth.getCurrentUser();
+////                                return null;
+//                            }
+//                        })
+//                                .addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        currentUser = null;
+//                                    }
+//                                });
                         // save current user
 
                     } else {

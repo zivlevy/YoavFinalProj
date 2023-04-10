@@ -80,7 +80,7 @@ public class Locations {
 
     ;
 
-    public Task<QuerySnapshot> getAllLocations() {
+    public Task<QuerySnapshot> getAllLocations()  {
         return db.collection("locations").get();
     }
 

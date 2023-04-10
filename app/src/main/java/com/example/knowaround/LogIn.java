@@ -40,6 +40,8 @@ public class LogIn extends AppCompatActivity {
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
 
+
+                // TODO: remove in production
                 email = "zivilevy@gmail.com";
                 password = "zivi1503";
 
