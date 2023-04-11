@@ -34,13 +34,13 @@ public class Locations {
     private double averageRating;
     private String locationName;
     private String locationDescription;
-    private int numberOfRatings;
+    private int numOfReviews;
     private FirebaseFirestore db;
     private Auth auth = Auth.getInstance();
 
     private Locations() {
         db = FirebaseFirestore.getInstance();
-        numberOfRatings = 0;
+        numOfReviews = 0;
     }
 
     public static Locations getInstance() {
@@ -50,20 +50,21 @@ public class Locations {
         return instance;
     }
 
-    public Task<Void> addLocation(String name, String description, double latitude, double longitude, String photoURL) {
+    public Task<Void> addLocation(String name, String description, double latitude, double longitude, String photoURL, String type) {
 
         String userId = auth.getCurrentUser().getUid();
         String id = UUID.randomUUID().toString();
         Map<String, Object> location = new HashMap<>();
         location.put("userId", userId);
         location.put("id", id);
+        location.put("type", type);
         location.put("name", name);
         location.put("description", description);
         location.put("latitude", latitude);
         location.put("longitude", longitude);
         location.put("photoURL", photoURL);
         location.put("averageRating", 0);
-        location.put("numberOfRatings", 0);
+        location.put("numOfReviews", 0);
         return db.collection("locations").document(id).set(location);
     }
 
@@ -92,10 +93,10 @@ public class Locations {
             @Override
             public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                 DocumentSnapshot snapshot = transaction.get(locationRef);
-                double newAverageRating = (snapshot.getDouble("averageRating") * snapshot.getDouble("numberOfRatings") + rating) / (snapshot.getDouble("numberOfRatings") + 1);
-                int newNumberOfRatings = snapshot.getDouble("numberOfRatings").intValue() + 1;
+                double newAverageRating = (snapshot.getDouble("averageRating") * snapshot.getDouble("numOfReviews") + rating) / (snapshot.getDouble("numOfReviews") + 1);
+                int newnumOfReviews = snapshot.getDouble("numOfReviews").intValue() + 1;
                 transaction.update(locationRef, "averageRating", newAverageRating);
-                transaction.update(locationRef, "numberOfRatings", newNumberOfRatings);
+                transaction.update(locationRef, "numOfReviews", newnumOfReviews);
 
                 // Success
                 return null;

@@ -74,7 +74,7 @@ public class AddLocation extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
 
         //We will use this data to inflate the drop-down items
-        String[] Subjects = new String[]{"Water", "Place to sleep", "Food", "Toilet", "Medical", "Other"};
+        String[] Subjects = new String[]{"Food & Drink", "Resupply", "Medical", "Attractions", "Housing", "Water Supply", "Nature Attractions", "Fun", " Misc"};
 
         // create an array adapter and pass the required parameter
         // in our case pass the context, drop down layout , and array.
@@ -161,8 +161,9 @@ public class AddLocation extends AppCompatActivity {
                                     etLocationDescription.getText().toString(),
                                     latitude,
                                     longitude,
-                                    url
-                            ).addOnCompleteListener(saveTask -> {
+                                    url,
+                                    autoCompleteTextView.getText().toString()
+                                    ).addOnCompleteListener(saveTask -> {
                                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
                                 builder.setTitle("Success");
                                 builder.setMessage("The location saved successfully .");

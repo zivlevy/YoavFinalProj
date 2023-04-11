@@ -10,12 +10,13 @@ public class Location {
     public double latitude;
     public double longitude;
     public String photoURL;
+    public String type;
     public double averageRating;
     public int numOfReviews;
 
     public String userId;
 
-    public Location(String name, String description, double averageRating, double lat, double lng, String photoURL, String userId) {
+    public Location(String name, String description, double lat, double lng, String photoURL, String userId, String type) {
         this.name = "";
         this.description = "";
         this.latitude = lat;
@@ -24,6 +25,21 @@ public class Location {
         this.averageRating = 0;
         this.numOfReviews = 0;
         this.userId = userId;
+        this.type = type;
+
+    }
+
+    public Location(String id, String name, String description, double lat, double lng, String photoURL, String userId, double averageRating, int numOfReviews, String type ) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.latitude = lat;
+        this.longitude = lng;
+        this.photoURL = photoURL;
+        this.averageRating = averageRating;
+        this.numOfReviews = numOfReviews;
+        this.userId = userId;
+        this.type = type;
 
     }
 
