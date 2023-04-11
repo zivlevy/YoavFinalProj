@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,8 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -94,6 +97,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             public boolean onMarkerClick(Marker marker) {
                 Log.d("TAG", "onMarkerClick: " + marker.getSnippet());
+                // find the loaction in the locations list by the id stored in the marker snippet
+                locations.stream()
+                        .filter(location -> location.id.equals(marker.getSnippet()))
+                        .findFirst()
+                        .ifPresent(location -> {
+                            // open bottom drawer with location details
+
+
+                });
+
 
                 return true;
             }
