@@ -21,8 +21,11 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.knowaround.databinding.ActivityMapBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +36,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,6 +58,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     private ListenerRegistration registration;
 
     private List<models.Location> locations = new ArrayList<>();
+
+//    bottom drawer
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +110,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
                         .findFirst()
                         .ifPresent(location -> {
                             // open bottom drawer with location details
+                            showBottomSheetDialog(location) ;
 
 
                 });
@@ -208,6 +216,19 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     public Bitmap resizeBitmap(String drawableName, int width, int height) {
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(drawableName, "drawable", getPackageName()));
         return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+    }
+
+    private void showBottomSheetDialog(models.Location location) {
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+        imageView = bottomSheetDialog.findViewById(R.id.imageView);
+        Glide.with(this).load(location.photoURL)
+                .override(500, 800)
+                .fitCenter()
+                .into(imageView);
+
+        bottomSheetDialog.show();
     }
 
 }
