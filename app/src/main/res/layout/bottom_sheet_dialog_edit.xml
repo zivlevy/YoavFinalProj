@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
 
-    <TextView
+    <EditText
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text=""
-        android:id="@+id/placeName"
+        android:id="@+id/editName"
         android:textColor="#020000"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -26,11 +26,11 @@
         android:textSize="20sp"
         />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:id="@+id/placeDesc"
+        android:id="@+id/editDesc"
         android:textColor="#020000"
         android:textSize="15sp"
         />
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/download"
+        android:id="@+id/downloadEdit"
         android:background="?android:attr/selectableItemBackground"
         android:padding="8dp">
 
@@ -54,30 +54,29 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textStyle="bold"
-        android:id="@+id/placeRating"
-        android:textColor="#020000"
-        android:textSize="20sp"
-        />
-
-    <RatingBar
-        android:id="@+id/ratingBarLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rate!"
+        android:text="save changes"
+        android:textAllCaps="true"
         android:textSize="25dp"
-        android:id="@+id/btRateLocation"
+        android:id="@+id/btSave"
         android:layout_gravity="center_horizontal"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delete location"
+        android:textAllCaps="true"
+        android:textSize="25dp"
+        android:id="@+id/btDelete"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+
+
 
 </LinearLayout>

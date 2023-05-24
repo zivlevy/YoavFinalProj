@@ -22,8 +22,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -49,13 +51,26 @@ public class AddLocation extends AppCompatActivity {
 
     //    private Position positionService = Position.getInstance();
     private FusedLocationProviderClient fusedLocationClient;
+    private Boolean isEdit = false;
     private Double latitude;
     private Double longitude;
     private AutoCompleteTextView autoCompleteTextView;
     private Button btnAddLocation;
     private Button btnTakePicture;
+    private TextView tvTitle;
     private ImageView imageView;
     private Locations locationsService = Locations.getInstance();
+
+
+    // for edit vars
+    private String id;
+    private String photoURL;
+    double averageRating;
+    int numOfReviews;
+
+    // when new image taken on edit
+    boolean isEditNewImage = false;
+    String userId;
 
     TextInputEditText etLocationName, etLocationDescription;
     String currentPhotoPath;
@@ -71,8 +86,30 @@ public class AddLocation extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         etLocationName = findViewById(R.id.locationName);
         etLocationDescription = findViewById(R.id.locationDescription);
+        tvTitle = findViewById(R.id.textView_loginTitle);
         imageView = findViewById(R.id.imageView);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            isEdit = extras.getBoolean("isEdit");
+            if (isEdit) {
+                tvTitle.setText("Edit Location");
+                id = extras.getString("id");
+                etLocationName.setText(extras.getString("name"));
+                etLocationDescription.setText(extras.getString("description"));
+                latitude = extras.getDouble("latitude");
+                longitude = extras.getDouble("longitude");
+                photoURL = extras.getString("photoURL");
+                autoCompleteTextView.setText(extras.getString("type"));
+                averageRating = extras.getDouble("averageRating");
+                numOfReviews = extras.getInt("numOfReviews");
+                userId = extras.getString("userId");
+                Glide.with(this).load(photoURL)
+                        .into(imageView);
+            }
+
+            //The key argument here must match that used in the other activity
+        }
         //We will use this data to inflate the drop-down items
         String[] Subjects = new String[]{"Food & Drink", "Resupply", "Medical", "Attractions", "Housing", "Water Supply", "Nature Attractions", "Fun", " Misc"};
 
@@ -99,7 +136,7 @@ public class AddLocation extends AppCompatActivity {
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
+                        if (location != null && !isEdit) {  //  update location only if not in edit mode
                             // Logic to handle location object
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
@@ -139,7 +176,7 @@ public class AddLocation extends AppCompatActivity {
             }
 
             // check if image is taken
-            if (currentPhotoPath == null) {
+            if (!isEdit && currentPhotoPath == null) {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
                 builder.setTitle("Image is required");
                 builder.setMessage("Please take a picture before saving.");
@@ -149,41 +186,99 @@ public class AddLocation extends AppCompatActivity {
                 builder.show();
                 return;
             }
-
-            // if yes, save to DB
-            locationsService.savePictureToDB(currentPhotoPath)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-                            String url = downloadUri.toString();
-                            locationsService.addLocation(
-                                    etLocationName.getText().toString(),
-                                    etLocationDescription.getText().toString(),
-                                    latitude,
-                                    longitude,
-                                    url,
-                                    autoCompleteTextView.getText().toString()
+            if (isEdit) {// save updated location
+                if (isEditNewImage) {
+                    locationsService.savePictureToDB(currentPhotoPath)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+                                    String url = downloadUri.toString();
+                                    locationsService.updateLocation(
+                                            id,
+                                            userId,
+                                            etLocationName.getText().toString(),
+                                            etLocationDescription.getText().toString(),
+                                            latitude,
+                                            longitude,
+                                            url,
+                                            autoCompleteTextView.getText().toString(),
+                                            averageRating,
+                                            numOfReviews
                                     ).addOnCompleteListener(saveTask -> {
+                                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
+                                        builder.setTitle("Success");
+                                        builder.setMessage("The location saved successfully .");
+                                        builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                                            finish();
+                                        });
+
+                                        builder.show();
+                                    });
+
+                                }
+                            });
+                } else {
+                    locationsService.updateLocation(
+                            id,
+                            userId,
+                            etLocationName.getText().toString(),
+                            etLocationDescription.getText().toString(),
+                            latitude,
+                            longitude,
+                            photoURL,
+                            autoCompleteTextView.getText().toString(),
+                            averageRating,
+                            numOfReviews
+                    ).addOnCompleteListener(saveTask -> {
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
+                        builder.setTitle("Success");
+                        builder.setMessage("The location saved successfully .");
+                        builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                            finish();
+                        });
+
+                        builder.show();
+                    });
+
+                }
+
+            } else {// add new location
+                // if yes, save to DB
+                locationsService.savePictureToDB(currentPhotoPath)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                String url = downloadUri.toString();
+                                locationsService.addLocation(
+                                        etLocationName.getText().toString(),
+                                        etLocationDescription.getText().toString(),
+                                        latitude,
+                                        longitude,
+                                        url,
+                                        autoCompleteTextView.getText().toString()
+                                ).addOnCompleteListener(saveTask -> {
+                                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
+                                    builder.setTitle("Success");
+                                    builder.setMessage("The location saved successfully .");
+                                    builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                                        finish();
+                                    });
+
+                                    builder.show();
+                                });
+                            } else {
                                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
-                                builder.setTitle("Success");
-                                builder.setMessage("The location saved successfully .");
+                                builder.setTitle("Error");
+                                builder.setMessage("Something went wrong, please try again later.");
                                 builder.setPositiveButton("OK", (dialogInterface, i) -> {
-                                    finish();
                                 });
 
                                 builder.show();
-                            });
-                        } else {
-                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(AddLocation.this);
-                            builder.setTitle("Error");
-                            builder.setMessage("Something went wrong, please try again later.");
-                            builder.setPositiveButton("OK", (dialogInterface, i) -> {
-                            });
 
-                            builder.show();
+                            }
+                        });
+            }
 
-                        }
-                    });
 //
         });
     }
@@ -199,8 +294,8 @@ public class AddLocation extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK) {
             showImage();
         } else {
-            imageView.setImageDrawable(null);
-            currentPhotoPath = null;
+//            imageView.setImageDrawable(null);
+//            currentPhotoPath = null;
         }
     }
 
@@ -227,6 +322,7 @@ public class AddLocation extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
+                isEditNewImage = true;
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
                         photoFile);

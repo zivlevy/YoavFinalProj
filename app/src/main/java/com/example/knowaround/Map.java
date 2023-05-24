@@ -21,8 +21,12 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +52,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import services.Auth;
+import services.Locations;
+
 public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener {
 
@@ -59,8 +66,15 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
 
     private List<models.Location> locations = new ArrayList<>();
 
+    private Auth auth = Auth.getInstance();
+    private Locations locationService  = Locations.getInstance();
+
 //    bottom drawer
     ImageView imageView;
+    TextView tvLocationName, tvLocationDescription, tvLocationRating;
+
+    EditText etName, etDescription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,15 +234,51 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
 
     private void showBottomSheetDialog(models.Location location) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
-        imageView = bottomSheetDialog.findViewById(R.id.imageView);
-        Glide.with(this).load(location.photoURL)
-                .override(500, 800)
-                .fitCenter()
-                .into(imageView);
+        if (auth.getCurrentUser().getUid().equals(location.userId)) {
+            Intent intent = new Intent(Map.this, AddLocation.class);
+            intent.putExtra("isEdit",true);
+            intent.putExtra("id",location.id);
+            intent.putExtra("name",location.name);
+            intent.putExtra("description",location.description);
+            intent.putExtra("latitude",location.latitude);
+            intent.putExtra("longitude",location.longitude);
+            intent.putExtra("photoURL",location.photoURL);
+            intent.putExtra("type",location.type);
+            intent.putExtra("averageRating",location.averageRating);
+            intent.putExtra("numOfReviews",location.numOfReviews);
+            intent.putExtra("userId",location.userId);
+            startActivity(intent);
+        }
 
-        bottomSheetDialog.show();
+        else {
+            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+            imageView = bottomSheetDialog.findViewById(R.id.imageView);
+            Glide.with(this).load(location.photoURL)
+                    .override(500, 800)
+                    .fitCenter()
+                    .into(imageView);
+            tvLocationDescription = bottomSheetDialog.findViewById(R.id.placeDesc);
+            tvLocationDescription.setText(location.description);
+            tvLocationName = bottomSheetDialog.findViewById(R.id.placeName);
+            tvLocationName.setText(location.name);
+            tvLocationRating = bottomSheetDialog.findViewById(R.id.placeRating);
+            tvLocationRating.setText("Average Rating: " + String.valueOf(location.averageRating));
+            RatingBar rating= bottomSheetDialog.findViewById(R.id.ratingBarLocation);
+            Button btnReview = bottomSheetDialog.findViewById(R.id.btRateLocation);
+
+
+            btnReview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    locationService.addRating(rating.getRating(), location.id);
+                    bottomSheetDialog.dismiss();
+                    //change it so if the user already rated the location he update his rating instead of adding a new one
+                }
+            });
+
+            bottomSheetDialog.show();
+        }
     }
 
 }

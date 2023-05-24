@@ -13,7 +13,6 @@ public class Location {
     public String type;
     public double averageRating;
     public int numOfReviews;
-
     public String userId;
 
     public Location(String name, String description, double lat, double lng, String photoURL, String userId, String type) {
@@ -109,4 +108,21 @@ public class Location {
     public void setNumOfReviews(int numOfReviews) {
         this.numOfReviews = numOfReviews;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
 }

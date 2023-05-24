@@ -4,6 +4,7 @@ public class Users {
 
     public String name;
     public String password;
+
     public int id;
     public String gmail;
     public int role;
