@@ -1,33 +1,23 @@
 package com.example.knowaround;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.knowaround.databinding.ActivityMapBinding;
@@ -35,7 +25,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -49,6 +38,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,58 +223,58 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     }
 
     private void showBottomSheetDialog(models.Location location) {
-
-        if (auth.getCurrentUser().getUid().equals(location.userId)) {
-
-            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_edit);
-            imageView = bottomSheetDialog.findViewById(R.id.imageView);
-            Glide.with(this).load(location.photoURL)
-                    .override(500, 800)
-                    .fitCenter()
-                    .into(imageView);
-            tvLocationDescription = bottomSheetDialog.findViewById(R.id.editDesc);
-            tvLocationDescription.setText(location.description);
-            tvLocationName = bottomSheetDialog.findViewById(R.id.editName);
-            tvLocationName.setText(location.name);
-            tvLocationRating = bottomSheetDialog.findViewById(R.id.editRating);
-            tvLocationRating.setText("Average Rating: " + String.valueOf(location.averageRating));
-            Button btnEdit = bottomSheetDialog.findViewById(R.id.btEdit);
-            Button btnDelete = bottomSheetDialog.findViewById(R.id.btDelete);
-
-            btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Map.this, AddLocation.class);
-                    intent.putExtra("isEdit",true);
-                    intent.putExtra("id",location.id);
-                    intent.putExtra("name",location.name);
-                    intent.putExtra("description",location.description);
-                    intent.putExtra("latitude",location.latitude);
-                    intent.putExtra("longitude",location.longitude);
-                    intent.putExtra("photoURL",location.photoURL);
-                    intent.putExtra("type",location.type);
-                    intent.putExtra("averageRating",location.averageRating);
-                    intent.putExtra("numOfReviews",location.numOfReviews);
-                    intent.putExtra("userId",location.userId);
-                    bottomSheetDialog.dismiss();
-                    startActivity(intent);
-                }
-            });
-
-            btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    db.collection("locations").document(location.id).delete();
-                    bottomSheetDialog.dismiss();
-                }
-            });
-
-            bottomSheetDialog.show();
-
-        }
-
-        else {
+//
+//        if (auth.getCurrentUser().getUid().equals(location.userId)) {
+//
+//            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+//            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_edit);
+//            imageView = bottomSheetDialog.findViewById(R.id.imageView);
+//            Glide.with(this).load(location.photoURL)
+//                    .override(500, 800)
+//                    .fitCenter()
+//                    .into(imageView);
+//            tvLocationDescription = bottomSheetDialog.findViewById(R.id.editDesc);
+//            tvLocationDescription.setText(location.description);
+//            tvLocationName = bottomSheetDialog.findViewById(R.id.editName);
+//            tvLocationName.setText(location.name);
+//            tvLocationRating = bottomSheetDialog.findViewById(R.id.editRating);
+//            tvLocationRating.setText("Average Rating: " + String.valueOf(location.averageRating));
+//            Button btnEdit = bottomSheetDialog.findViewById(R.id.btEdit);
+//            Button btnDelete = bottomSheetDialog.findViewById(R.id.btDelete);
+//
+//            btnEdit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(Map.this, AddLocation.class);
+//                    intent.putExtra("isEdit",true);
+//                    intent.putExtra("id",location.id);
+//                    intent.putExtra("name",location.name);
+//                    intent.putExtra("description",location.description);
+//                    intent.putExtra("latitude",location.latitude);
+//                    intent.putExtra("longitude",location.longitude);
+//                    intent.putExtra("photoURL",location.photoURL);
+//                    intent.putExtra("type",location.type);
+//                    intent.putExtra("averageRating",location.averageRating);
+//                    intent.putExtra("numOfReviews",location.numOfReviews);
+//                    intent.putExtra("userId",location.userId);
+//                    bottomSheetDialog.dismiss();
+//                    startActivity(intent);
+//                }
+//            });
+//
+//            btnDelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    db.collection("locations").document(location.id).delete();
+//                    bottomSheetDialog.dismiss();
+//                }
+//            });
+//
+//            bottomSheetDialog.show();
+//
+//        }
+//
+//        else {
             final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
             bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
             imageView = bottomSheetDialog.findViewById(R.id.imageView);
@@ -297,7 +287,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
             tvLocationName = bottomSheetDialog.findViewById(R.id.placeName);
             tvLocationName.setText(location.name);
             tvLocationRating = bottomSheetDialog.findViewById(R.id.placeRating);
-            tvLocationRating.setText("Average Rating: " + String.valueOf(location.averageRating));
+            DecimalFormat formatter = new DecimalFormat("#0.00");
+            tvLocationRating.setText("Average Rating: " +  formatter.format(location.averageRating));
             RatingBar rating= bottomSheetDialog.findViewById(R.id.ratingBarLocation);
             Button btnReview = bottomSheetDialog.findViewById(R.id.btRateLocation);
 
@@ -312,7 +303,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
             });
 
             bottomSheetDialog.show();
-        }
+//        }
     }
 
 }
