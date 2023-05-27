@@ -235,19 +235,53 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     private void showBottomSheetDialog(models.Location location) {
 
         if (auth.getCurrentUser().getUid().equals(location.userId)) {
-            Intent intent = new Intent(Map.this, AddLocation.class);
-            intent.putExtra("isEdit",true);
-            intent.putExtra("id",location.id);
-            intent.putExtra("name",location.name);
-            intent.putExtra("description",location.description);
-            intent.putExtra("latitude",location.latitude);
-            intent.putExtra("longitude",location.longitude);
-            intent.putExtra("photoURL",location.photoURL);
-            intent.putExtra("type",location.type);
-            intent.putExtra("averageRating",location.averageRating);
-            intent.putExtra("numOfReviews",location.numOfReviews);
-            intent.putExtra("userId",location.userId);
-            startActivity(intent);
+
+            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_edit);
+            imageView = bottomSheetDialog.findViewById(R.id.imageView);
+            Glide.with(this).load(location.photoURL)
+                    .override(500, 800)
+                    .fitCenter()
+                    .into(imageView);
+            tvLocationDescription = bottomSheetDialog.findViewById(R.id.editDesc);
+            tvLocationDescription.setText(location.description);
+            tvLocationName = bottomSheetDialog.findViewById(R.id.editName);
+            tvLocationName.setText(location.name);
+            tvLocationRating = bottomSheetDialog.findViewById(R.id.editRating);
+            tvLocationRating.setText("Average Rating: " + String.valueOf(location.averageRating));
+            Button btnEdit = bottomSheetDialog.findViewById(R.id.btEdit);
+            Button btnDelete = bottomSheetDialog.findViewById(R.id.btDelete);
+
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Map.this, AddLocation.class);
+                    intent.putExtra("isEdit",true);
+                    intent.putExtra("id",location.id);
+                    intent.putExtra("name",location.name);
+                    intent.putExtra("description",location.description);
+                    intent.putExtra("latitude",location.latitude);
+                    intent.putExtra("longitude",location.longitude);
+                    intent.putExtra("photoURL",location.photoURL);
+                    intent.putExtra("type",location.type);
+                    intent.putExtra("averageRating",location.averageRating);
+                    intent.putExtra("numOfReviews",location.numOfReviews);
+                    intent.putExtra("userId",location.userId);
+                    bottomSheetDialog.dismiss();
+                    startActivity(intent);
+                }
+            });
+
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db.collection("locations").document(location.id).delete();
+                    bottomSheetDialog.dismiss();
+                }
+            });
+
+            bottomSheetDialog.show();
+
         }
 
         else {

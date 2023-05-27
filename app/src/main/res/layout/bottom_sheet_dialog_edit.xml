@@ -7,11 +7,22 @@
     android:layout_height="match_parent">
 
 
-    <EditText
+    <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text=""
         android:id="@+id/editName"
+        android:textColor="#020000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text=""
+        android:id="@+id/editRating"
         android:textColor="#020000"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -26,7 +37,7 @@
         android:textSize="20sp"
         />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -58,10 +69,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="save changes"
+        android:text="Edit Location"
         android:textAllCaps="true"
         android:textSize="25dp"
-        android:id="@+id/btSave"
+        android:id="@+id/btEdit"
         android:layout_gravity="center_horizontal"
         />
 

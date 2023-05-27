@@ -47,7 +47,7 @@ public class LogIn extends AppCompatActivity {
 
 
 //                // TODO: remove in production
-                email = "yoav@gmail.com";
+                email = "zivilevy@gmail.com";
                 password = "zivi1503";
 
                 if (email.isEmpty() || password.isEmpty()) {
