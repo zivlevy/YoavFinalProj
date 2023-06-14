@@ -29,7 +29,6 @@ public class Auth {
 
     private Auth() {
         mAuth = FirebaseAuth.getInstance();
-
     }
 
     public static Auth getInstance() {
@@ -48,7 +47,6 @@ public class Auth {
         return mAuth.getCurrentUser();
     }
 
-
     public Task<AuthResult> login(String email, String password) {
        return  mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -64,7 +62,7 @@ public class Auth {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         currentUser = mAuth.getCurrentUser();
-                        Map<String, Object> user = new HashMap<>();
+                                Map<String, Object> user = new HashMap<>();
                         // add to firestore
                         user.put("email", email);
                         user.put("name", userName);
@@ -83,7 +81,7 @@ public class Auth {
 //                                        currentUser = null;
 //                                    }
 //                                });
-                        // save current user
+                        // save current user    
 
                     } else {
 

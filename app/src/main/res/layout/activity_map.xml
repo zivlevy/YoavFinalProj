@@ -11,6 +11,30 @@
     app:uiZoomControls="true"
     tools:context=".Map" >
 
+
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="Search for a location"
+        android:iconifiedByDefault="false"
+        android:background="#FFFFFF"
+        />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/searchView"
+        android:layout_marginTop="50dp"
+        android:divider="#000000"
+        android:dividerHeight="1dp"
+
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btAddLocation"
         android:layout_width="wrap_content"

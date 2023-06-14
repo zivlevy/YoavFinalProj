@@ -1,17 +1,13 @@
 package com.example.knowaround;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,20 +25,16 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import services.Locations;
+import services.LocationService;
 
 //import services.Position;
 
@@ -59,7 +51,7 @@ public class AddLocation extends AppCompatActivity {
     private Button btnTakePicture;
     private TextView tvTitle;
     private ImageView imageView;
-    private Locations locationsService = Locations.getInstance();
+    private LocationService locationsService = LocationService.getInstance();
 
 
     // for edit vars
@@ -309,7 +301,6 @@ public class AddLocation extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-
 //        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
         if (true) {
             // Create the File where the photo should go

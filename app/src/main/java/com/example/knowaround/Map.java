@@ -8,14 +8,17 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -43,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import services.Auth;
-import services.Locations;
+import services.LocationService;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener {
@@ -57,13 +60,17 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     private List<models.Location> locations = new ArrayList<>();
 
     private Auth auth = Auth.getInstance();
-    private Locations locationService  = Locations.getInstance();
+    private LocationService locationService  = LocationService.getInstance();
 
 //    bottom drawer
     ImageView imageView;
     TextView tvLocationName, tvLocationDescription, tvLocationRating;
 
-    EditText etName, etDescription;
+    SearchView searchView;
+    ListView listView;
+
+    ArrayAdapter<String> adapter;
+
 
 
     @Override
@@ -78,6 +85,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
         mapFragment.getMapAsync(this);
 
         btnFab = findViewById(R.id.btAddLocation);
+
+
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,10 +112,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
         mMap.moveCamera(CameraUpdateFactory.newLatLng(israel));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(8));
 
-
         // set marker click listener
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            public boolean onMarkerClick(Marker marker) {
+                    public boolean onMarkerClick(Marker marker) {
                 Log.d("TAG", "onMarkerClick: " + marker.getSnippet());
                 // find the loaction in the locations list by the id stored in the marker snippet
                 locations.stream()
@@ -115,11 +123,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
                         .ifPresent(location -> {
                             // open bottom drawer with location details
                             showBottomSheetDialog(location) ;
-
-
                 });
-
-
                 return true;
             }
         });
@@ -136,6 +140,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
                         }
                         // convert firestore locations to Location objects
                         locations = new ArrayList<>();
+                        String [] locationNames = new String[value.size()];
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("latitude") != null) {
                                 models.Location location = new models.Location(
@@ -152,6 +157,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
 
                                 );
                                 locations.add(location);
+
+                                locationNames[locations.indexOf(location)] = location.name;
                             }
                         }
 
@@ -189,6 +196,40 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
                             mMap.addMarker(markerOptions);
                         });
 
+
+                        searchView = findViewById(R.id.searchView);
+                        listView = findViewById(R.id.listView);
+                        adapter = new ArrayAdapter<>(Map.this, android.R.layout.simple_list_item_1,  android.R.id.text1, locationNames);
+                        listView.setAdapter(adapter);
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                models.Location location = locations.get(i);
+                                LatLng latLng = new LatLng(location.latitude, location.longitude);
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                                listView.setVisibility(View.GONE);
+                            }
+                        });
+
+
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                listView.setVisibility(View.VISIBLE);
+                                Map.this.adapter.getFilter().filter(query);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+                                listView.setVisibility(View.VISIBLE);
+                                Map.this.adapter.getFilter().filter(newText);
+                                return false;
+                            }
+
+                        });
+
                     }
                 });
     }
@@ -212,8 +253,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     protected void onDestroy() {
         super.onDestroy();
         registration.remove();
-
-
     }
 
     // Resize the bitmap to fit the marker
@@ -223,58 +262,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
     }
 
     private void showBottomSheetDialog(models.Location location) {
-//
-//        if (auth.getCurrentUser().getUid().equals(location.userId)) {
-//
-//            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-//            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_edit);
-//            imageView = bottomSheetDialog.findViewById(R.id.imageView);
-//            Glide.with(this).load(location.photoURL)
-//                    .override(500, 800)
-//                    .fitCenter()
-//                    .into(imageView);
-//            tvLocationDescription = bottomSheetDialog.findViewById(R.id.editDesc);
-//            tvLocationDescription.setText(location.description);
-//            tvLocationName = bottomSheetDialog.findViewById(R.id.editName);
-//            tvLocationName.setText(location.name);
-//            tvLocationRating = bottomSheetDialog.findViewById(R.id.editRating);
-//            tvLocationRating.setText("Average Rating: " + String.valueOf(location.averageRating));
-//            Button btnEdit = bottomSheetDialog.findViewById(R.id.btEdit);
-//            Button btnDelete = bottomSheetDialog.findViewById(R.id.btDelete);
-//
-//            btnEdit.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(Map.this, AddLocation.class);
-//                    intent.putExtra("isEdit",true);
-//                    intent.putExtra("id",location.id);
-//                    intent.putExtra("name",location.name);
-//                    intent.putExtra("description",location.description);
-//                    intent.putExtra("latitude",location.latitude);
-//                    intent.putExtra("longitude",location.longitude);
-//                    intent.putExtra("photoURL",location.photoURL);
-//                    intent.putExtra("type",location.type);
-//                    intent.putExtra("averageRating",location.averageRating);
-//                    intent.putExtra("numOfReviews",location.numOfReviews);
-//                    intent.putExtra("userId",location.userId);
-//                    bottomSheetDialog.dismiss();
-//                    startActivity(intent);
-//                }
-//            });
-//
-//            btnDelete.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    db.collection("locations").document(location.id).delete();
-//                    bottomSheetDialog.dismiss();
-//                }
-//            });
-//
-//            bottomSheetDialog.show();
-//
-//        }
-//
-//        else {
+
             final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
             bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
             imageView = bottomSheetDialog.findViewById(R.id.imageView);
@@ -288,11 +276,22 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
             tvLocationName.setText(location.name);
             tvLocationRating = bottomSheetDialog.findViewById(R.id.placeRating);
             DecimalFormat formatter = new DecimalFormat("#0.00");
-            tvLocationRating.setText("Average Rating: " +  formatter.format(location.averageRating));
             RatingBar rating= bottomSheetDialog.findViewById(R.id.ratingBarLocation);
             Button btnReview = bottomSheetDialog.findViewById(R.id.btRateLocation);
+            Button btnDelete = bottomSheetDialog.findViewById(R.id.btDelete);
+            Button btnEdit = bottomSheetDialog.findViewById(R.id.btEdit);
 
 
+            if (auth.getCurrentUser().getUid().equals(location.userId)){
+                btnReview.setVisibility(View.GONE);
+                rating.setVisibility(View.GONE);
+            }
+
+            else {
+                tvLocationRating.setText("Average Rating: " +  formatter.format(location.averageRating));
+                btnDelete.setVisibility(View.GONE);
+                btnEdit.setVisibility(View.GONE);
+            }
             btnReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -301,9 +300,35 @@ public class Map extends FragmentActivity implements OnMapReadyCallback, GoogleM
                     //change it so if the user already rated the location he update his rating instead of adding a new one
                 }
             });
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    locationService.deleteLocation(location.id);
+                    bottomSheetDialog.dismiss();
+                }
+            });
+            btnEdit.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Map.this, AddLocation.class);
+                    intent.putExtra("isEdit",true);
+                    intent.putExtra("id",location.id);
+                    intent.putExtra("name",location.name);
+                    intent.putExtra("description",location.description);
+                    intent.putExtra("latitude",location.latitude);
+                    intent.putExtra("longitude",location.longitude);
+                    intent.putExtra("photoURL",location.photoURL);
+                    intent.putExtra("type",location.type);
+                    intent.putExtra("averageRating",location.averageRating);
+                    intent.putExtra("numOfReviews",location.numOfReviews);
+                    intent.putExtra("userId",location.userId);
+                    bottomSheetDialog.dismiss();
+                    startActivity(intent);
+                }
+            });
 
             bottomSheetDialog.show();
-//        }
+
     }
 
 }

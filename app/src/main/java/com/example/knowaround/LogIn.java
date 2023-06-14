@@ -23,10 +23,11 @@ import services.Auth;
 
 public class LogIn extends AppCompatActivity {
 
-    Button btnLogin, btnSignup;
-    TextInputEditText etEmail, etPassword;
+    Button btnLogin;
+    EditText etEmail, etPassword;
     Auth auth = Auth.getInstance();
-    String email, password;
+
+    String email, password; // TODO: remove in production
     MaterialTextView gotoSignupText;
 
     @Override
@@ -45,12 +46,7 @@ public class LogIn extends AppCompatActivity {
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
 
-
-//                // TODO: remove in production
-                email = "zivilevy@gmail.com";
-                password = "zivi1503";
-
-                if (email.isEmpty() || password.isEmpty()) {
+                if (etEmail.getText().toString().isEmpty() || etPassword.getText().toString().isEmpty()) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LogIn.this);
                     builder.setTitle("Misssing Fields");
                     builder.setMessage("Please fill all the fields");
@@ -62,7 +58,7 @@ public class LogIn extends AppCompatActivity {
                     return;
                 }
 
-                if (password.length() < 6) {
+                if (etPassword.getText().toString().length() < 6) {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LogIn.this);
                     builder.setTitle("Password too short");
                     builder.setMessage("Please enter a password with at least 6 characters");
@@ -73,7 +69,7 @@ public class LogIn extends AppCompatActivity {
                     builder.show();
                     return;
                 }
-                auth.login(email, password)
+                auth.login(etEmail.getText().toString(),etPassword.getText().toString())
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(LogIn.this, Map.class);
@@ -107,39 +103,5 @@ public class LogIn extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int num = item.getItemId();
-        if (num== R.id.menuAbout)
-        {
-            Toast.makeText(this, "AA", Toast.LENGTH_SHORT).show();
-        }
-        if (num== R.id.menuExit)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Exit");
-            builder.setMessage("Are you sure you want to exit?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    finish();
-                }
-            });
-
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-
-        }
-        return true;
-    }
 }

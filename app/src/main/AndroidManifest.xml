@@ -49,9 +49,6 @@
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".Test"
-            android:exported="false" />
-        <activity
             android:name=".SignUp"
             android:exported="false">
         </activity>

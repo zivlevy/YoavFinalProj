@@ -9,14 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".Map">
 
-<!--    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--        xmlns:tools="http://schemas.android.com/tools"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical"-->
-<!--        android:padding="30dp"-->
-<!--        tools:context=".Map">-->
+
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -93,6 +86,29 @@
         android:insetBottom="0dp"
         android:text="Rate Location"
         android:textAllCaps="false" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Location"
+        android:textAllCaps="true"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:textSize="25dp"
+        android:id="@+id/btEdit"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delete location"
+        android:textAllCaps="true"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:textSize="25dp"
+        android:id="@+id/btDelete"
+        android:layout_gravity="center_horizontal"
+        />
 
 
 </LinearLayout>
